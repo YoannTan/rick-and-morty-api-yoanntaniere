@@ -5,6 +5,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.mathieu.cleanrmapi.data.local.CharacterDAO
 import org.mathieu.cleanrmapi.data.local.EpisodeDAO
+import org.mathieu.cleanrmapi.data.local.LocationDAO
 import org.mathieu.cleanrmapi.data.local.RMDatabase
 import org.mathieu.cleanrmapi.data.local.getRoomDatabase
 import org.mathieu.cleanrmapi.data.remote.CharacterApi
@@ -54,6 +55,11 @@ val databaseModule = module {
     single<EpisodeDAO> {
         val db: RMDatabase = get()
         db.episodeDAO()
+    }
+
+    single<LocationDAO> {
+        val db: RMDatabase = get()
+        db.locationDAO()
     }
 
 }

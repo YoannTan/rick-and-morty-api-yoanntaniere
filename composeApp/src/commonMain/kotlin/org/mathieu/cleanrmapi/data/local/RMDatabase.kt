@@ -24,10 +24,12 @@ abstract class RMDatabase: RoomDatabase() {
 
     abstract fun characterDAO(): CharacterDAO
     abstract fun episodeDAO(): EpisodeDAO
+    abstract fun locationDAO(): LocationDAO
 
     companion object {
         const val CHARACTER_TABLE = "character_table"
         const val EPISODE_TABLE = "episode_table"
+        const val LOCATION_TABLE = "location_table"
     }
 
 }
