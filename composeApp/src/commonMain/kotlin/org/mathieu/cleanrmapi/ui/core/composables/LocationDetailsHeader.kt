@@ -11,6 +11,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Displays a styled header for a location, including its name, type,
+ * dimension, and number of residents. The content is presented in cards.
+ *
+ * @param name The name of the location.
+ * @param type The type or category of the location.
+ * @param dimension The dimension or universe the location belongs to.
+ * @param residentsCount The number of characters residing in this location.
+ */
 @Composable
 fun LocationDetailsHeader(
     name: String,
@@ -39,6 +48,12 @@ fun LocationDetailsHeader(
     }
 }
 
+/**
+ * Displays a single info card with a title and value.
+ *
+ * @param title The label describing the data (e.g., "Type").
+ * @param value The value associated with the title (e.g., "Planet").
+ */
 @Composable
 private fun InfoCard(
     title: String,

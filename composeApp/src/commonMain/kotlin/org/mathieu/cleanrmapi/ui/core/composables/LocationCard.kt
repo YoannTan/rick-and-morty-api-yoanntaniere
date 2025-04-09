@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +23,19 @@ import org.mathieu.cleanrmapi.common.useClickSound
 import org.mathieu.cleanrmapi.ui.core.theme.OnBackgroundColor
 import org.mathieu.cleanrmapi.ui.core.theme.SurfaceColor
 
+/**
+ * A composable representing a styled location card with an icon and a text.
+ *
+ * This card reacts to clicks by triggering a sound (via [useClickSound]) and a provided [onClick] action.
+ *
+ * @param modifier Modifier applied to the root element.
+ * @param orientation Layout orientation (vertical or horizontal).
+ * @param imageVector The icon displayed alongside the text.
+ * @param location The name or label to display inside the card.
+ * @param backgroundColor Background color of the card.
+ * @param color Tint color for icon and text.
+ * @param onClick Callback triggered on card click.
+ */
 @Composable
 fun LocationCard(
     modifier: Modifier = Modifier,
@@ -62,6 +74,13 @@ fun LocationCard(
     }
 }
 
+/**
+ * Internal content block of the location card that shows the icon and text.
+ *
+ * @param color Tint color applied to the image and text.
+ * @param imageVector The icon to display.
+ * @param text The string to display under or beside the icon.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Content(

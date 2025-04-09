@@ -3,21 +3,10 @@ package org.mathieu.cleanrmapi.ui.screens.locationdetails
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -35,11 +24,17 @@ import org.mathieu.cleanrmapi.ui.core.theme.PrimaryColor
 import org.mathieu.cleanrmapi.ui.screens.characterdetails.CharacterDetailsAction
 import org.mathieu.cleanrmapi.ui.screens.characterdetails.CharacterDetailsState
 
+/**
+ * Composable screen displaying details of a specific location.
+ *
+ * @param navController Navigation controller used for navigation actions.
+ * @param id The ID of the location to display.
+ */
 @Composable
 fun LocationDetailsScreen(
     navController: NavController,
     id: Int
-){
+) {
     Screen(
         viewModel = viewModel { LocationDetailsViewModel() },
         navController = navController
@@ -54,10 +49,16 @@ fun LocationDetailsScreen(
             onClickBack = navController::popBackStack,
             onAction = viewModel::handleAction
         )
-
     }
 }
 
+/**
+ * Main content composable handling screen state and rendering UI accordingly.
+ *
+ * @param state The current UI state for the location detail.
+ * @param onAction Callback for user actions.
+ * @param onClickBack Callback for back navigation.
+ */
 @Composable
 private fun Content(
     state: LocationDetailsState = LocationDetailsState.Loading,
@@ -69,7 +70,6 @@ private fun Content(
         .padding(),
     contentAlignment = Alignment.Center
 ) {
-
     BackArrow(
         modifier = Modifier
             .align(Alignment.TopStart)
@@ -85,12 +85,17 @@ private fun Content(
                 onAction = onAction
             )
             LocationDetailsState.Loading -> {
-                /** TODO: Could display a Loading Animation */
+                // TODO: Could display a loading animation here
             }
         }
     }
 }
 
+/**
+ * Composable that displays an error message.
+ *
+ * @param error The error message to display.
+ */
 @Composable
 private fun ErrorView(error: String) {
     Text(
@@ -104,14 +109,22 @@ private fun ErrorView(error: String) {
     )
 }
 
+/**
+ * Object that encapsulates the UI rendering of the loaded location state.
+ */
 private object LocationDetailsContent {
 
+    /**
+     * Main UI content when the location is successfully loaded.
+     *
+     * @param state The loaded state containing the location.
+     * @param onAction Callback for user actions.
+     */
     @Composable
     operator fun invoke(
         state: LocationDetailsState.Loaded,
         onAction: (LocationDetailsAction) -> Unit
     ) {
-
         val location = state.location
 
         var offsetY by remember {
@@ -119,10 +132,8 @@ private object LocationDetailsContent {
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
-
             Header(
                 state = state,
                 offsetY = offsetY,
@@ -172,12 +183,17 @@ private object LocationDetailsContent {
                     )
                 }
             }
-
-
         }
-
     }
 
+    /**
+     * Header composable displaying location metadata.
+     *
+     * @param state The current loaded state.
+     * @param offsetY The vertical offset for potential animation (currently unused).
+     * @param onAction Callback for actions.
+     * @param location The location being displayed.
+     */
     @Composable
     private fun Header(
         state: LocationDetailsState.Loaded,
@@ -185,13 +201,11 @@ private object LocationDetailsContent {
         onAction: (LocationDetailsAction) -> Unit,
         location: org.mathieu.cleanrmapi.domain.location.models.Location
     ) {
-
         LocationDetailsHeader(
             name = location.name,
             type = location.type,
             dimension = location.dimension,
             residentsCount = location.residents.size
         )
-
     }
 }

@@ -10,6 +10,14 @@ import org.mathieu.cleanrmapi.data.remote.responses.PaginatedResponse
 import org.mathieu.cleanrmapi.data.validators.IdListValidator
 import org.mathieu.cleanrmapi.data.validators.annotations.MustBeCommaSeparatedIds
 
+/**
+ * Provides methods to fetch location data from the remote Rick & Morty API.
+ *
+ * This class is responsible for handling all HTTP requests related to location resources.
+ * It uses the injected [HttpClient] to perform API calls and deserialize the responses.
+ *
+ * @property client The [HttpClient] used to make network requests.
+ */
 internal class LocationApi(private val client: HttpClient) {
 
     /**

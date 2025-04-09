@@ -11,6 +11,15 @@ import org.mathieu.cleanrmapi.domain.location.models.Location
 
 private const val LOCATION_CACHE_DURATION = 1000 * 60 * 60 * 24 // 24h
 
+/**
+ * Implementation of [LocationRepository] that handles data retrieval for locations
+ * using both local cache (Room) and remote API as fallback.
+ *
+ * @property dataStore Provides access to persistent key-value storage.
+ * @property locationApi API interface used to fetch remote location data.
+ * @property locationDAO Data access object for local location data.
+ * @property characterDAO DAO used to retrieve resident character details.
+ */
 internal class LocationRepositoryImpl(
     private val dataStore: DataStore,
     private val locationApi: LocationApi,
@@ -18,6 +27,14 @@ internal class LocationRepositoryImpl(
     private val characterDAO: CharacterDAO
 ) : LocationRepository {
 
+    /**
+     * Retrieves a location by its ID, using cache if available and fresh, or falling back to the remote API.
+     * Also resolves all resident character references from local storage.
+     *
+     * @param id The unique identifier of the location to retrieve.
+     * @return A fully populated [Location] object, including residents.
+     * @throws Exception If the location cannot be retrieved from either cache or API.
+     */
     override suspend fun getLocation(id: Int): Location {
         val cached = locationDAO.getLocation(id)
 
@@ -43,6 +60,12 @@ internal class LocationRepositoryImpl(
         throw Exception("Could not load location $id.")
     }
 
+    /**
+     * Determines if a cached location entry is expired based on a fixed duration.
+     *
+     * @param lastFetchedAt The timestamp of the last data fetch in milliseconds.
+     * @return True if the data is considered stale, false otherwise.
+     */
     private fun isExpired(lastFetchedAt: Long): Boolean {
         return System.currentTimeMillis() - lastFetchedAt > LOCATION_CACHE_DURATION
     }

@@ -8,6 +8,17 @@ import org.mathieu.cleanrmapi.domain.location.models.Location
 import org.mathieu.cleanrmapi.domain.location.models.LocationPreview
 import org.mathieu.cleanrmapi.domain.character.models.Character
 
+/**
+ * Room entity representing a location as stored in the local database.
+ *
+ * @property id Unique identifier of the location.
+ * @property name Name of the location.
+ * @property type Type or category of the location.
+ * @property dimension Dimension or universe where the location exists.
+ * @property residentIds List of character IDs that reside in this location.
+ * @property created Date when the location was originally created (from the API).
+ * @property lastFetchedAt Timestamp of the last time this data was fetched from the API.
+ */
 @Entity(tableName = RMDatabase.LOCATION_TABLE)
 class LocationObject(
     @PrimaryKey
@@ -20,6 +31,12 @@ class LocationObject(
     val lastFetchedAt: Long
 ) {
     companion object {
+        /**
+         * Creates a [LocationObject] from a [LocationResponse].
+         *
+         * @param response The response received from the remote API.
+         * @return A local database object corresponding to the response.
+         */
         fun fromResponse(response: LocationResponse): LocationObject {
             val ids = response.residents.mapNotNull {
                 it.substringAfterLast("/").toIntOrNull()
@@ -38,6 +55,11 @@ class LocationObject(
     }
 }
 
+/**
+ * Converts a [LocationResponse] to a [LocationObject] for local storage.
+ *
+ * @return A [LocationObject] instance populated with the data from this response.
+ */
 internal fun LocationResponse.toDBObject(): LocationObject {
     val residentIds = residents.mapNotNull { url ->
         url.substringAfterLast("/").toIntOrNull()
@@ -54,6 +76,12 @@ internal fun LocationResponse.toDBObject(): LocationObject {
     )
 }
 
+/**
+ * Converts a [LocationObject] to a domain model [Location], including resolved residents.
+ *
+ * @param residents The list of [Character]s who reside at this location.
+ * @return A [Location] domain model instance.
+ */
 internal fun LocationObject.toModel(residents: List<Character>): Location {
     return Location(
         id = id,
@@ -64,6 +92,11 @@ internal fun LocationObject.toModel(residents: List<Character>): Location {
     )
 }
 
+/**
+ * Converts a [LocationObject] into a lightweight [LocationPreview] model.
+ *
+ * @return A simplified version of the location, for use in summaries or previews.
+ */
 internal fun LocationObject.toPreview(): LocationPreview {
     return LocationPreview(
         id = id,
