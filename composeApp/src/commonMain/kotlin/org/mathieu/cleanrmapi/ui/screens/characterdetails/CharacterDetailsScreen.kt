@@ -52,6 +52,7 @@ import org.mathieu.cleanrmapi.domain.episode.models.Episode
 import org.mathieu.cleanrmapi.ui.core.composables.Avatar
 import org.mathieu.cleanrmapi.ui.core.composables.BackArrow
 import org.mathieu.cleanrmapi.ui.core.composables.IconWithImage
+import org.mathieu.cleanrmapi.ui.core.composables.LocationCard
 import org.mathieu.cleanrmapi.ui.core.composables.PreviewContent
 import org.mathieu.cleanrmapi.ui.core.composables.Screen
 import org.mathieu.cleanrmapi.ui.core.extensions.imageVector
@@ -150,7 +151,8 @@ private object CharacterDetailsContent {
 
             Header(
                 state = state,
-                offsetY = offsetY
+                offsetY = offsetY,
+                onAction = onAction
             )
 
             LazyColumn {
@@ -183,7 +185,8 @@ private object CharacterDetailsContent {
     @Composable
     private fun Header(
         state: CharacterDetailsState.Loaded,
-        offsetY: Float
+        offsetY: Float,
+        onAction: (CharacterDetailsAction) -> Unit
     ) {
 
         val density = LocalDensity.current
@@ -219,7 +222,9 @@ private object CharacterDetailsContent {
                 AdditionalInfo(
                     gender = state.gender,
                     status = state.status,
-                    location = state.location
+                    locationName = state.locationName,
+                    locationId = state.locationId,
+                    onLocationClick = { onAction(CharacterDetailsAction.SelectedLocation(state.locationId)) }
                 )
 
             }
@@ -231,7 +236,9 @@ private object CharacterDetailsContent {
     private fun AdditionalInfo(
         gender: CharacterGender,
         status: CharacterStatus,
-        location: String
+        locationName: String,
+        locationId: Int,
+        onLocationClick: () -> Unit
     ) = Row(
         modifier = Modifier
             .padding(8.dp)
@@ -249,9 +256,11 @@ private object CharacterDetailsContent {
 
         Spacer(Modifier.width(16.dp))
 
-        IconWithImage(
+        LocationCard(
             modifier = Modifier.weight(1f),
-            imageVector = Icons.Rounded.Home, text = location
+            imageVector = Icons.Rounded.Home,
+            location = locationName,
+            onClick = onLocationClick
         )
 
         Spacer(Modifier.width(16.dp))

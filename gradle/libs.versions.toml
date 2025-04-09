@@ -20,6 +20,8 @@ ktor = "3.1.1"
 ksp = "2.1.10-1.0.31"
 sqlite = "2.5.0-SNAPSHOT"
 navigationCompose = "2.8.0-alpha10"
+foundationAndroid = "1.7.8"
+composeMaterial = "1.4.1"
 
 [libraries]
 
@@ -61,6 +63,8 @@ ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-java = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
+compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
