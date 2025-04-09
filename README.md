@@ -1,21 +1,77 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop.
+# Rick and Morty API – KMP App
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+This application is a demonstration of a clean architecture project built with **Kotlin Multiplatform (KMP)** using data from the Rick & Morty API. It is built with **Jetpack Compose** on Android and partially supports Desktop.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Project Architecture
 
+The project is structured following **Clean Architecture principles**, with separation between **domain**, **data**, and **ui** layers. It supports both **Android** and **Desktop** platforms.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+### commonMain
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
+Contains **shared code** between platforms (Android, Desktop).
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
+#### domain/
+
+- Contains **business logic**.
+- Defines **repository interfaces** (e.g., `CharacterRepository`, `LocationRepository`).
+- Contains **domain models** (`Character`, `Episode`, `Location`, etc.).
+
+#### data/
+
+- Contains **data sources** (local and remote).
+- `local/objects/`: Room entities (e.g., `CharacterObject`).
+- `remote/responses/`: API responses (e.g., `CharacterResponse`).
+- `repositories/`: Concrete implementations of repositories.
+- `validators/`: Data validators.
+
+#### ui/
+
+- Shared UI components.
+- `core/composables/`: Reusable UI elements (`CharacterCard`, `LocationCard`, etc.).
+- `screens/`: Organized by screen features (`characterdetails`, `locationdetails`, etc.).
+- `extensions/`, `theme/`, `Navigation.kt`: UI theming, utilities, and navigation setup.
+
+#### common/
+
+- Utility functions used across platforms (e.g., `SoundPlayer`, `Flows.kt`, etc.).
+
+### androidMain
+
+Platform-specific code for **Android**:
+
+- `ui/`: Contains `MainActivity`, `Application` class.
+- `data/`: Room configuration and Android-specific implementations.
+- `SoundPlayer.kt`: Manages audio playback using `MediaPlayer`.
+- `res/raw/portal_click_sound.mp3`: Sound played on specific UI actions.
+- `DataModule.android.kt`: Android Koin dependency module.
+
+### desktopMain
+
+Platform-specific code for **Desktop**:
+
+- Desktop-specific `HttpClient` implementation.
+- Koin dependency module for Desktop.
+
+## Key Concepts
+
+- **Layered architecture** (domain, data, ui)
+- **Koin** for dependency injection
+- **Room** for local persistence
+- **Ktor** for networking
+- **Jetpack Compose** for UI
+- **KMP** for shared business logic
+
+## Features
+
+- Character list and detailed views
+- Navigation between characters, episodes, and locations
+- Caching with Room
+- Sound played on certain interactions
+- Dynamic loading of location residents
+
+## Getting Started
+
+1. Clone the repository
+2. Open in Android Studio with KMP support
+3. Run the Android configuration (`MainActivity`)
+4. (Optional) Run the Desktop version from `desktopMain/Main.kt`
