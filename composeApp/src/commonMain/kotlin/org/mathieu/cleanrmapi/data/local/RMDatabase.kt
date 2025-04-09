@@ -4,21 +4,25 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import androidx.room.TypeConverters
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.mathieu.cleanrmapi.data.local.objects.CharacterObject
 import org.mathieu.cleanrmapi.data.local.objects.EpisodeObject
+import org.mathieu.cleanrmapi.data.local.objects.LocationObject
 
 @Database(
     entities = [
         CharacterObject::class,
-        EpisodeObject::class
+        EpisodeObject::class,
+        LocationObject::class
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
 
+@TypeConverters(Converters::class)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class RMDatabase: RoomDatabase() {
 
